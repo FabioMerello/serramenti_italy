@@ -120,3 +120,48 @@ document.addEventListener('DOMContentLoaded', () => {
         hideBanner();
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const mapContainer = document.getElementById("map-container-3");
+    const banner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("accept-cookies");
+
+    const mapIframe = `
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2820.079875904058!2d7.662653876250102!3d45.023303971070256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDXCsDAxJzIzLjkiTiA3wrAzOSc1NC44IkU!5e0!3m2!1sit!2sit!4v1765832559675!5m2!1sit!2sit"
+            width="600"
+            height="450"
+            style="border:0;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    `;
+
+    function loadMap() {
+        if (mapContainer) mapContainer.innerHTML = mapIframe;
+    }
+
+    // Se il consenso è già dato
+    if (localStorage.getItem("cookiesAccepted") === "true") {
+        loadMap();
+        if (banner) banner.style.display = "none";
+    } else if (banner) {
+        // Mostra banner
+        setTimeout(() => banner.classList.add("show"), 100);
+    }
+
+    // Click su Accetta cookie
+    if (acceptBtn) {
+        acceptBtn.addEventListener("click", () => {
+            localStorage.setItem("cookiesAccepted", "true");
+            loadMap();
+            if (banner) {
+                banner.classList.remove("show");
+                setTimeout(() => banner.style.display = "none", 500);
+            }
+        });
+    }
+
+});
