@@ -188,7 +188,7 @@ body {
 .hero {
     position: relative;
     height: 100vh;
-    background: url('https://www.viss.it/wp-content/uploads/2025/03/bg-t-pg_vetrate-panoramiche.jpg') center/cover no-repeat;
+    background: url('hero_image.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
