@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mapContainer = document.getElementById("map-container-3");
     const banner = document.getElementById("cookie-banner");
     const acceptBtn = document.getElementById("accept-cookies");
+    const rejectBtn = document.getElementById("reject-cookies");
 
     const mapIframe = `
         <iframe
@@ -133,34 +134,43 @@ document.addEventListener("DOMContentLoaded", () => {
             width="600"
             height="450"
             style="border:0;"
-            allowfullscreen
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
+            loading="lazy">
         </iframe>
     `;
 
     function loadMap() {
-        if (mapContainer) mapContainer.innerHTML = mapIframe;
+        if (mapContainer) {
+            mapContainer.innerHTML = mapIframe;
+        }
     }
 
-    // Se il consenso è già dato
-    if (localStorage.getItem("cookiesAccepted") === "true") {
+    const consent = localStorage.getItem("cookiesChoice");
+
+    if (consent === "accepted") {
         loadMap();
         if (banner) banner.style.display = "none";
-    } else if (banner) {
-        // Mostra banner
-        setTimeout(() => banner.classList.add("show"), 100);
     }
 
-    // Click su Accetta cookie
+    if (consent === "rejected") {
+        if (banner) banner.style.display = "none";
+    }
+
+    if (!consent && banner) {
+        banner.style.display = "block";
+    }
+
     if (acceptBtn) {
         acceptBtn.addEventListener("click", () => {
-            localStorage.setItem("cookiesAccepted", "true");
+            localStorage.setItem("cookiesChoice", "accepted");
             loadMap();
-            if (banner) {
-                banner.classList.remove("show");
-                setTimeout(() => banner.style.display = "none", 500);
-            }
+            if (banner) banner.style.display = "none";
+        });
+    }
+
+    if (rejectBtn) {
+        rejectBtn.addEventListener("click", () => {
+            localStorage.setItem("cookiesChoice", "rejected");
+            if (banner) banner.style.display = "none";
         });
     }
 
